@@ -26,8 +26,8 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'flight_manager = drone_teleop.flight_manager:main',
-            'teleop_node = drone_teleop.teleop_node:main',
+            'flight_manager = drone_teleop.nodes.flight_manager:main',
+            'teleop_node = drone_teleop.nodes.teleop_node:main',
         ],
     },
 )

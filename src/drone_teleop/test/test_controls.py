@@ -3,8 +3,8 @@ import random
 from uuid import uuid4
 
 from domain import Domain
-from drone_teleop.axis import Axis
 from drone_teleop.controls import Controls
+from drone_teleop.pair import Pair
 from drone_teleop.steering import Steering
 from hamcrest import assert_that, calling, equal_to, raises
 from mavros_msgs.msg import PositionTarget
@@ -21,7 +21,7 @@ def test_publishes_word_of_pressed_key() -> None:
     with Domain(random.randint(1, 100), Context()) as node:
         node.create_subscription(String, '/words', inbox.put, lasting)
         Controls(
-            Steering(Axis(1, 2, 1.0), Axis(3, 4, 1.0), Axis(5, 6, 1.0), Axis(7, 8, 1.0)),
+            Steering(Pair(1, 2, 1.0), Pair(3, 4, 1.0), Pair(5, 6, 1.0), Pair(7, 8, 1.0)),
             {key: word},
             node.create_publisher(PositionTarget, '/targets', lasting),
             node.create_publisher(String, '/words', lasting)
@@ -36,7 +36,7 @@ def test_keeps_silent_on_unbound_key() -> None:
     with Domain(random.randint(1, 100), Context()) as node:
         node.create_subscription(String, '/words', inbox.put, lasting)
         Controls(
-            Steering(Axis(1, 2, 1.0), Axis(3, 4, 1.0), Axis(5, 6, 1.0), Axis(7, 8, 1.0)),
+            Steering(Pair(1, 2, 1.0), Pair(3, 4, 1.0), Pair(5, 6, 1.0), Pair(7, 8, 1.0)),
             {random.randint(9, 400): uuid4().hex},
             node.create_publisher(PositionTarget, '/targets', lasting),
             node.create_publisher(String, '/words', lasting)
@@ -55,7 +55,7 @@ def test_publishes_velocity_while_key_is_held() -> None:
     with Domain(random.randint(1, 100), Context()) as node:
         node.create_subscription(PositionTarget, '/targets', inbox.put, lasting)
         Controls(
-            Steering(Axis(1, 2, speed), Axis(3, 4, 1.0), Axis(5, 6, 1.0), Axis(7, 8, 1.0)),
+            Steering(Pair(1, 2, speed), Pair(3, 4, 1.0), Pair(5, 6, 1.0), Pair(7, 8, 1.0)),
             {random.randint(9, 900): uuid4().hex},
             node.create_publisher(PositionTarget, '/targets', lasting),
             node.create_publisher(String, '/words', lasting)
@@ -71,10 +71,10 @@ def test_publishes_halt_when_last_key_is_released() -> None:
         node.create_subscription(PositionTarget, '/targets', inbox.put, lasting)
         Controls(
             Steering(
-                Axis(1, 2, random.uniform(0.5, 5.0)),
-                Axis(3, 4, 1.0),
-                Axis(5, 6, 1.0),
-                Axis(7, 8, 1.0)
+                Pair(1, 2, random.uniform(0.5, 5.0)),
+                Pair(3, 4, 1.0),
+                Pair(5, 6, 1.0),
+                Pair(7, 8, 1.0)
             ),
             {random.randint(9, 900): uuid4().hex},
             node.create_publisher(PositionTarget, '/targets', lasting),
@@ -90,7 +90,7 @@ def test_keeps_silent_while_idle() -> None:
     with Domain(random.randint(1, 100), Context()) as node:
         node.create_subscription(PositionTarget, '/targets', inbox.put, lasting)
         Controls(
-            Steering(Axis(1, 2, 1.0), Axis(3, 4, 1.0), Axis(5, 6, 1.0), Axis(7, 8, 1.0)),
+            Steering(Pair(1, 2, 1.0), Pair(3, 4, 1.0), Pair(5, 6, 1.0), Pair(7, 8, 1.0)),
             {random.randint(9, 900): uuid4().hex},
             node.create_publisher(PositionTarget, '/targets', lasting),
             node.create_publisher(String, '/words', lasting)

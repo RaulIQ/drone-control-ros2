@@ -88,7 +88,7 @@ The keys work while the `teleop_node` window has focus.
 | `R` | return to the launch point |
 | `W` / `S` | forward / backward |
 | `A` / `D` | left / right |
-| `Space` / left `Shift` | up / down |
+| `Space` / left `Shift` + `Space` | up / down |
 | `Q` / `E` | turn left / right |
 
 Motion is relative to the nose of the drone and works only after a takeoff through `T`.
